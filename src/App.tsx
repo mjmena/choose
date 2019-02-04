@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import randomcolor from "randomcolor";
 import useWindowSize from "./hooks/useWindowSize";
 import usePointers from "./hooks/usePointers";
 
@@ -21,8 +22,8 @@ function App() {
             key={pointer.id}
             cx={pointer.x}
             cy={pointer.y}
-            r="25px"
-            stroke="yellow"
+            r="50px"
+            stroke={randomcolor()}
             fill="none"
           />
         ))}

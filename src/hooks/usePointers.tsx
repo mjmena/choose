@@ -1,4 +1,5 @@
 import { RefObject, useEffect, useReducer } from "react";
+import { throttle } from "lodash";
 
 interface Pointer {
   id: number;
@@ -7,7 +8,7 @@ interface Pointer {
 }
 
 interface PositionAction extends Pointer {
-  type: "down" | "move";
+  type: "move";
 }
 
 interface IdAction {
@@ -19,12 +20,9 @@ type Action = PositionAction | IdAction;
 
 const pointersReducer = (state: Pointer[], action: Action) => {
   switch (action.type) {
-    case "down": {
-      return [...state, { id: action.id, x: action.x, y: action.y }];
-    }
     case "move": {
       return state
-        .filter(pointer => pointer.id === action.id)
+        .filter(pointer => pointer.id !== action.id)
         .concat({ id: action.id, x: action.x, y: action.y });
     }
     case "up": {
@@ -34,33 +32,41 @@ const pointersReducer = (state: Pointer[], action: Action) => {
 };
 
 const usePointers = (ref: RefObject<EventTarget | null>) => {
-  const [pointers, dispatch] = useReducer(pointersReducer, [] as Pointer[]);
+  const [pointers, dispatch] = useReducer(pointersReducer, []);
 
   useEffect(() => {
-    const handleDown = (e: Event) => {
-      e.preventDefault();
-      if (e instanceof PointerEvent) {
-        dispatch({ type: "down", id: e.pointerId, x: e.clientX, y: e.clientY });
-      }
-    };
-
     const handleUp = (e: Event) => {
       e.preventDefault();
       if (e instanceof PointerEvent) {
         dispatch({ type: "up", id: e.pointerId });
       }
     };
+
+    const handleMove = (e: Event) => {
+      e.preventDefault();
+      if (e instanceof PointerEvent) {
+        dispatch({ type: "move", id: e.pointerId, x: e.clientX, y: e.clientY });
+      }
+    };
+
+    const handleDisableMenu = (e: Event) => {
+      e.preventDefault();
+    };
+
     if (ref.current instanceof EventTarget) {
-      ref.current.addEventListener("pointerdown", handleDown);
+      ref.current.addEventListener("pointermove", handleMove);
       ref.current.addEventListener("pointerup", handleUp);
+      ref.current.addEventListener("contextmenu", handleDisableMenu);
       return () => {
         if (ref.current instanceof EventTarget) {
-          ref.current.removeEventListener("pointerdown", handleDown);
+          ref.current.addEventListener("pointermove", handleMove);
           ref.current.removeEventListener("pointerup", handleUp);
+          ref.current.addEventListener("contextmenu", handleDisableMenu);
         }
       };
     }
   }, [ref]);
+
   return pointers;
 };
 
