@@ -1,28 +1,34 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef } from "react";
+import useWindowSize from "./hooks/useWindowSize";
+import usePointers from "./hooks/usePointers";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+const style: React.CSSProperties = {
+  backgroundColor: "#222222",
+  touchAction: "none"
+};
+
+function App() {
+  const size = useWindowSize();
+
+  const ref = useRef<SVGSVGElement | null>(null);
+  const pointers = usePointers(ref);
+
+  return (
+    <svg ref={ref} width={size.width} height={size.height} style={style}>
+      <g>
+        {pointers.map(pointer => (
+          <circle
+            key={pointer.id}
+            cx={pointer.x}
+            cy={pointer.y}
+            r="25px"
+            stroke="yellow"
+            fill="none"
+          />
+        ))}
+      </g>
+    </svg>
+  );
 }
 
 export default App;
