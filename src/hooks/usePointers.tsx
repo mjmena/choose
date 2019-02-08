@@ -32,7 +32,10 @@ const pointersReducer = (state: Pointer[], action: Action) => {
 };
 
 const usePointers = (ref: RefObject<EventTarget | null>) => {
-  const [pointers, dispatch] = useReducer(pointersReducer, []);
+  const [pointers, dispatch] = useReducer(pointersReducer, [
+    { id: 500, x: 500, y: 500 },
+    { id: 999, x: 300, y: 240 }
+  ]);
 
   useEffect(() => {
     const handleUp = (e: Event) => {

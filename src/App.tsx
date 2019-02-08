@@ -10,23 +10,27 @@ const style: React.CSSProperties = {
 
 function App() {
   const size = useWindowSize();
-
+  const seed = useRef(new Date().getMilliseconds());
   const ref = useRef<SVGSVGElement | null>(null);
   const pointers = usePointers(ref);
 
   return (
     <svg ref={ref} width={size.width} height={size.height} style={style}>
       <g>
-        {pointers.map(pointer => (
-          <circle
-            key={pointer.id}
-            cx={pointer.x}
-            cy={pointer.y}
-            r="50px"
-            stroke={randomcolor()}
-            fill="none"
-          />
-        ))}
+        {pointers.map(pointer => {
+          let color = randomcolor({ seed: pointer.id + seed.current });
+          return (
+            <circle
+              key={pointer.id}
+              cx={pointer.x}
+              cy={pointer.y}
+              r="50px"
+              stroke={color}
+              fill={color}
+            />
+          );
+        })}
+        }
       </g>
     </svg>
   );
