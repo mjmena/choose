@@ -1,11 +1,5 @@
 import { RefObject, useEffect, useReducer } from "react";
-import { throttle } from "lodash";
-
-interface Pointer {
-  id: number;
-  x: number;
-  y: number;
-}
+import Pointer from "../types/Pointer";
 
 interface PositionAction extends Pointer {
   type: "move";
