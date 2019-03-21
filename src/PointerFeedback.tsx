@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import randomColor from "randomcolor";
+import React from "react";
 import { useSpring, animated, config } from "react-spring";
 
 import Pointer from "./types/Pointer";
@@ -10,14 +9,12 @@ type Props = {
 };
 
 const PointerFeedback = ({ pointer, radius }: Props) => {
-  const [color] = useState(randomColor());
-
   const props = useSpring({
     from: { opacity: 0 },
     to: {
       opacity: 1,
-      stroke: color,
-      fill: color,
+      stroke: "red",
+      fill: "white",
       cx: pointer.x,
       cy: pointer.y
     },

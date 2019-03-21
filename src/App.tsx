@@ -1,12 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useMemo } from "react";
 import useWindowSize from "./hooks/useWindowSize";
 import usePointers from "./hooks/usePointers";
 import PointerFeedbackGroup from "./PointerFeedbackGroup";
-
-const style: React.CSSProperties = {
-  backgroundColor: "#222222",
-  touchAction: "none"
-};
 
 function App() {
   const size = useWindowSize();
@@ -14,7 +9,16 @@ function App() {
   const pointers = usePointers(ref);
 
   return (
-    <svg ref={ref} width={size.width} height={size.height} style={style}>
+    <svg
+      viewBox={`0 0 ${size.width} ${size.height}`}
+      ref={ref}
+      width={size.width}
+      height={size.height}
+      style={{
+        backgroundColor: "#222222",
+        touchAction: "none"
+      }}
+    >
       <PointerFeedbackGroup pointers={pointers} />
     </svg>
   );
