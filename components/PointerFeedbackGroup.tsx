@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import Pointer from "./types/Pointer";
+import Pointer from "../components/types/Pointer";
 import PointerFeedback from "./PointerFeedback";
 import { useSpring, config } from "react-spring";
 import { easeSinInOut } from "d3-ease";
@@ -25,7 +25,7 @@ function PointerFeedbackGroup({ pointers }: Props) {
   return (
     <g>
       {pointers.map(pointer => (
-        <PointerFeedback key={pointer.id} pointer={pointer} radius={radius} />
+        <PointerFeedback key={pointer.id} pointer={pointer} radius={radius as any} />
       ))}
     </g>
   );

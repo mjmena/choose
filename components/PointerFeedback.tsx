@@ -21,6 +21,8 @@ const PointerFeedback = ({ pointer, radius }: Props) => {
     config: config.stiff
   });
 
+  props.opacity = props.opacity as any;
+
   return <animated.circle r={radius} style={props} />;
 };
 

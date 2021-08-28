@@ -1,7 +1,7 @@
 import React, { useRef, useMemo } from "react";
-import useWindowSize from "./hooks/useWindowSize";
-import usePointers from "./hooks/usePointers";
-import PointerFeedbackGroup from "./PointerFeedbackGroup";
+import useWindowSize from "../components/hooks/useWindowSize";
+import usePointers from "../components/hooks/usePointers";
+import PointerFeedbackGroup from "../components/PointerFeedbackGroup";
 
 function App() {
   const size = useWindowSize();
